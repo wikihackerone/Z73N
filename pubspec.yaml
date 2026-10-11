@@ -1,0 +1,54 @@
+name: real_estate_app
+description: RentPal - تطبيق إدارة العقارات والإيجارات للأندرويد
+publish_to: 'none'
+version: 3.6.0+17
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  sqflite: ^2.3.2
+  path: ^1.8.3
+  path_provider: ^2.1.2
+  image_picker: ^1.0.7
+  url_launcher: ^6.2.5
+  pdf: ^3.10.8
+  printing: ^5.12.0
+  intl: any
+  crypto: ^3.0.3
+  local_auth: ^2.3.0
+  flutter_local_notifications: ^19.0.0
+  workmanager: any
+  archive: ^4.0.9
+  smb_connect: ^0.0.9
+  file_picker: ^8.1.2
+  share_plus: ^10.1.4
+  permission_handler: ^12.0.1
+  google_maps_flutter: ^2.9.0
+  geolocator: ^13.0.1
+  llamadart: ^0.11.1
+  cupertino_icons: ^1.0.6
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_launcher_icons: ^0.14.1
+
+flutter_launcher_icons:
+  android: true
+  ios: false
+  image_path: "assets/logo.png"
+  min_sdk_android: 24
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/icon_fg.png"
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/fonts/DejaVuSans.ttf
+    - assets/fonts/DejaVuSans-Bold.ttf
+    - assets/logo.png
