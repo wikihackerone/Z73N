@@ -1,0 +1,60 @@
+name: Build RentPal APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Flutter version
+        run: flutter --version
+
+      # مجلد android غير موجود في المستودع، يُنشأ تلقائياً دون المساس بملفات lib
+      # (اسم المشروع الداخلي ثابت real_estate_app حتى يتحدث التطبيق فوق النسخة القديمة دون فقد البيانات)
+      - name: Generate android folder
+        run: flutter create --platforms=android --project-name real_estate_app .
+
+      # الصلاحيات + MainActivity + 120Hz + desugaring + مفتاح الخريطة + اسم RentPal + توقيع ثابت
+      - name: Patch Android project
+        env:
+          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+        run: python3 tool/patch_android.py
+
+      - name: Get packages
+        run: flutter pub get
+
+      # أيقونة التطبيق من شعار RP
+      - name: Generate launcher icons
+        run: dart run flutter_launcher_icons
+
+      - name: Build release APK
+        run: flutter build apk --release
+
+      - name: Rename APK
+        run: cp build/app/outputs/flutter-apk/app-release.apk RentPal.apk
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: RentPal-apk
+          path: RentPal.apk
+          if-no-files-found: error
+          retention-days: 30
